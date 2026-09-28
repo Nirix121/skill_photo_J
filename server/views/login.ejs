@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title %></title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/panel/panel.css">
+</head>
+<body class="login">
+
+<form class="login-card" method="post" action="<%= panelUrl %>/login" autocomplete="off">
+  <img src="/assets/logo_jewels.png" alt="PALMIRA Jewels">
+  <h1>Панель выставления сертификатов</h1>
+
+  <% if (noAdmin) { %>
+    <p class="msg error">
+      Администратор ещё не создан. Выполните на сервере <code>npm run admin</code>
+      и задайте логин с паролем.
+    </p>
+  <% } else if (error) { %>
+    <p class="msg error"><%= error %></p>
+  <% } %>
+
+  <label>
+    <span>Логин</span>
+    <input type="text" name="username" autocomplete="username" required autofocus>
+  </label>
+
+  <label>
+    <span>Пароль</span>
+    <input type="password" name="password" autocomplete="current-password" required>
+  </label>
+
+  <button class="btn primary" type="submit" style="width:100%">Войти</button>
+</form>
+
+</body>
+</html>

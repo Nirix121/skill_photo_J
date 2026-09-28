@@ -1,0 +1,31 @@
+{
+  "name": "palmira-certificates",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Выставление, хранение и верификация сертификатов подлинности",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "admin": "node server/scripts/set-admin.js",
+    "secret": "node server/scripts/gen-secrets.js",
+    "backup": "node server/scripts/backup.js",
+    "check": "node server/scripts/check.js",
+    "test:security": "node --test tests/security.test.js",
+    "rebuild-pdfs": "node server/scripts/rebuild-pdfs.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
+    "multer": "^2.0.1",
+    "pdfkit": "^0.20.2",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.35.5"
+  }
+}

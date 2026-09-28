@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Certificate No. <%= cert.cert_number %> — PALMIRA Jewels</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/verify/certificate.css">
+<link rel="stylesheet" href="/verify/verify.css">
+</head>
+<body>
+
+<main>
+  <div class="stage">
+    <div class="stage-inner" id="stage">
+      <%- include('_sheet', { cert, photoUrl, qrSvg, qrCaption }) %>
+    </div>
+  </div>
+
+  <article class="mobile-certificate" aria-label="Information">
+    <header class="mobile-header">
+      <img src="/assets/logo_jewels_dark.png" alt="PALMIRA Jewels">
+      <p class="mobile-eyebrow">Certificate of authenticity</p>
+      <h1>No. <%= cert.cert_number %></h1>
+    </header>
+
+    <section class="mobile-photo" aria-labelledby="mobile-photo-title">
+      <h2 id="mobile-photo-title">Item Photograph</h2>
+      <img src="<%= photoUrl %>" alt="Certified item">
+    </section>
+
+    <section class="mobile-section" aria-labelledby="mobile-details">
+      <h2 id="mobile-details">Information</h2>
+      <dl class="mobile-fields">
+        <div><dt>Date of issue</dt><dd><%= cert.issue_date || '—' %></dd></div>
+        <div><dt>Item number</dt><dd><%= cert.item_number || '—' %></dd></div>
+        <div><dt>Description</dt><dd><%= cert.description || '—' %></dd></div>
+        <div><dt>Size</dt><dd><%= cert.size || '—' %></dd></div>
+      </dl>
+    </section>
+
+    <section class="mobile-section" aria-labelledby="mobile-material">
+      <h2 id="mobile-material">Material</h2>
+      <dl class="mobile-fields">
+        <div><dt>Metal</dt><dd><%= cert.metal || '—' %></dd></div>
+        <div><dt>Fineness</dt><dd><%= cert.fineness || '—' %></dd></div>
+        <div><dt>Weight</dt><dd><%= cert.weight || '—' %></dd></div>
+      </dl>
+    </section>
+
+    <% if (cert.gemstones && cert.gemstones.length) { %>
+      <section class="mobile-section" aria-labelledby="mobile-gemstones">
+        <h2 id="mobile-gemstones">Gemstones</h2>
+        <% for (const gem of cert.gemstones) { %>
+          <dl class="mobile-fields mobile-gem">
+            <div><dt>Cut</dt><dd><%= gem.cut || '—' %></dd></div>
+            <div><dt>Quantity</dt><dd><%= gem.qty || '—' %></dd></div>
+            <div><dt>Quality</dt><dd><%= gem.quality || '—' %></dd></div>
+            <div><dt>Color</dt><dd><%= gem.color || '—' %></dd></div>
+            <div><dt>Carat</dt><dd><%= gem.carat || '—' %></dd></div>
+          </dl>
+        <% } %>
+      </section>
+    <% } %>
+
+    <section class="mobile-section mobile-reference" aria-labelledby="mobile-scales">
+      <h2 id="mobile-scales">Reference scales</h2>
+      <div class="mobile-scale"><h3>Colour</h3><p>D–F Colourless · G–J Near colourless · K–M Faint · N–R Very light · S–Z Light</p></div>
+      <div class="mobile-scale"><h3>Clarity</h3><p>Flawless · Internally flawless · VVS₁–VVS₂ · VS₁–VS₂ · SI₁–SI₂ · I₁–I₃</p></div>
+    </section>
+
+    <figure class="mobile-qr">
+      <%- qrSvg %>
+      <figcaption><%= qrCaption %></figcaption>
+    </figure>
+  </article>
+
+  <div class="actions no-print">
+    <a class="btn primary" href="/verify/<%= cert.slug %>/certificate.pdf">Download PDF</a>
+    <button class="btn" type="button" id="print">Print</button>
+  </div>
+
+  <% if (hasExtraDoc) { %>
+    <section class="extra no-print">
+      <div class="extra-head">Additional document</div>
+      <a class="extra-card" href="/verify/<%= cert.slug %>/document.pdf" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          <path d="M14 2v6h6" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linejoin="round"/>
+        </svg>
+        <span>
+          <strong><%= cert.extra_doc_name || 'Document' %></strong>
+          <small>PDF · open in a new tab</small>
+        </span>
+      </a>
+    </section>
+  <% } %>
+
+  <p class="permalink no-print">
+    Verification link:
+    <a href="<%= verifyUrl %>"><%= verifyUrl %></a>
+  </p>
+</main>
+
+<script src="/verify/verify.js" defer></script>
+
+</body>
+</html>

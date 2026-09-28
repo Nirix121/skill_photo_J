@@ -1,0 +1,24 @@
+@font-face { font-family: 'Nunito Sans'; font-weight: 400; src: url('/fonts/nunito-sans-latin-400.woff2') format('woff2'); }
+@font-face { font-family: 'Nunito Sans'; font-weight: 600; src: url('/fonts/nunito-sans-latin-600.woff2') format('woff2'); }
+@font-face { font-family: 'Nunito Sans'; font-weight: 700; src: url('/fonts/nunito-sans-latin-700.woff2') format('woff2'); }
+:root { color-scheme: light; font-family: 'Nunito Sans', Arial, sans-serif; color: #272722; background: #f6f5f2; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+.page { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 16px; }
+.card { width: min(100%, 560px); padding: clamp(28px, 6vw, 54px); background: #fff; border: 1px solid #e7e2d6; box-shadow: 0 20px 55px rgba(40, 35, 22, .07); }
+header { text-align: center; }
+.brand { display: block; max-width: 68%; height: auto; margin: 0 auto 28px; }
+.rule { width: 48px; height: 1px; margin: 0 auto 22px; background: #a08e6a; }
+.eyebrow { margin: 0 0 10px; color: #a08e6a; font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+h1 { margin: 0; font-size: clamp(27px, 5vw, 36px); font-weight: 600; line-height: 1.2; }
+.intro { max-width: 390px; margin: 17px auto 30px; color: #69675f; font-size: 15px; line-height: 1.6; }
+label { display: block; margin-bottom: 9px; font-size: 13px; font-weight: 700; }
+input { display: block; width: 100%; min-height: 50px; padding: 12px 14px; border: 1px solid #cfcac0; border-radius: 2px; background: #fff; color: #272722; font: inherit; font-size: 14px; }
+input:focus-visible, button:focus-visible { outline: 2px solid #a08e6a; outline-offset: 2px; }
+input::placeholder { color: #969188; }
+.hint { margin: 9px 0 0; color: #79766f; font-size: 12px; line-height: 1.5; }
+.form-error { margin: 13px 0 0; color: #a32929; font-size: 13px; line-height: 1.5; }
+button { width: 100%; min-height: 49px; margin-top: 24px; padding: 12px 20px; border: 1px solid #272722; border-radius: 2px; background: #272722; color: #fff; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+button:hover { background: #050505; }
+.footer { margin: 24px 0 0; color: #928a7e; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+@media (max-width: 480px) { .page { justify-content: flex-start; padding-top: 10vh; } .card { padding: 28px 22px; } .brand { max-width: 72%; } }

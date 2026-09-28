@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= title %></title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/panel/panel.css">
+</head>
+<body data-panel-url="<%= panelUrl %>" data-site-url="<%= siteUrl %>">
+
+<header class="bar">
+  <img src="/assets/logo_jewels.png" alt="PALMIRA Jewels">
+  <span class="who">Панель выставления</span>
+  <span class="spacer"></span>
+  <span class="who"><%= username %></span>
+  <form method="post" action="<%= panelUrl %>/logout">
+    <button type="submit">Выйти</button>
+  </form>
+</header>
+
+<div class="wrap">
+
+  <!-- --------------------------- выставление --------------------------- -->
+  <section class="card">
+    <header>
+      <h2 id="form-title">Выставить сертификат</h2>
+      <span class="spacer"></span>
+      <button class="btn ghost small" type="button" id="reset" hidden>Отменить правку</button>
+    </header>
+
+    <div class="body">
+      <p class="msg error" id="form-error" hidden></p>
+
+      <form id="cert-form" autocomplete="off">
+        <input type="hidden" id="cert-id">
+
+        <fieldset>
+          <legend>Адрес сертификата</legend>
+          <div class="grid-2">
+            <label>
+              <span>Номер сертификата</span>
+              <input type="text" id="cert_number" inputmode="numeric" placeholder="20104834" required>
+            </label>
+            <label>
+              <span>Папка хранения</span>
+              <select id="folder" required>
+                <% folders.forEach((f) => { %>
+                  <option value="<%= f %>"><%= f %></option>
+                <% }) %>
+              </select>
+            </label>
+          </div>
+          <p class="hint">
+            К номеру и папке дописывается <%= codeDigits %> случайных цифр — получается
+            <code><%= siteUrl.replace(/^https?:\/\//, '') %>/verify/20104834edb…</code>
+            Цифры не повторяются. Номер и папку после выпуска изменить нельзя:
+            адрес уже напечатан на документе.
+          </p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Изделие</legend>
+          <label>
+            <span>Дата выдачи</span>
+            <input type="text" id="issue_date" placeholder="November 24, 2023" required>
+          </label>
+          <div class="grid-2">
+            <label>
+              <span>Item Number</span>
+              <input type="text" id="item_number" placeholder="91232434">
+            </label>
+            <label>
+              <span>Description</span>
+              <input type="text" id="description" placeholder="RING" required>
+            </label>
+          </div>
+          <label>
+            <span>Size</span>
+            <input type="text" id="size" placeholder="US 23">
+          </label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Материал</legend>
+          <label>
+            <span>Metal</span>
+            <input type="text" id="metal" placeholder="WHITE GOLD">
+          </label>
+          <div class="grid-2">
+            <label>
+              <span>Fineness</span>
+              <input type="text" id="fineness" placeholder="0.750">
+            </label>
+            <label>
+              <span>Weight</span>
+              <input type="text" id="weight" placeholder="14 GRAMS">
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Камни</legend>
+          <div class="gem-head">
+            <div>Cut</div><div>Qty</div><div>Quality</div><div>Color</div><div>Carat</div><div></div>
+          </div>
+          <div id="gems"></div>
+          <button class="btn ghost small" type="button" id="add-gem">Добавить строку</button>
+        </fieldset>
+
+        <fieldset>
+          <legend>Файлы</legend>
+          <label>
+            <span>Фото изделия</span>
+            <input type="file" id="photo" accept="image/jpeg,image/png,image/webp">
+          </label>
+          <div class="grid-2">
+            <label>
+              <span>Дополнительный документ (PDF)</span>
+              <input type="file" id="document" accept="application/pdf">
+            </label>
+            <label>
+              <span>Название документа</span>
+              <input type="text" id="extra_doc_name" placeholder="Заключение геммолога">
+            </label>
+          </div>
+          <p class="hint" id="doc-current" hidden></p>
+          <label id="doc-remove-wrap" hidden>
+            <span style="display:flex;align-items:center;gap:8px;font-weight:400">
+              <input type="checkbox" id="remove_document" style="width:auto;min-height:0">
+              Удалить прикреплённый документ
+            </span>
+          </label>
+        </fieldset>
+
+        <div class="form-actions">
+          <button class="btn primary" type="submit" id="submit">Выставить</button>
+        </div>
+      </form>
+
+      <div class="issued" id="issued" hidden>
+        <strong>Сертификат выставлен. Адрес проверки:</strong>
+        <code id="issued-url"></code>
+        <div class="form-actions">
+          <button class="btn small" type="button" id="copy">Скопировать ссылку</button>
+          <a class="btn small ghost" id="issued-open" href="#" target="_blank" rel="noopener">Открыть</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------ реестр ------------------------------ -->
+  <section class="card">
+    <header>
+      <h2>Реестр сертификатов</h2>
+    </header>
+
+    <div class="toolbar">
+      <input type="text" id="search" placeholder="Поиск по номеру, изделию или адресу">
+      <select id="filter-folder">
+        <option value="">Все папки</option>
+        <% folders.forEach((f) => { %>
+          <option value="<%= f %>"><%= f %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="stats">
+      <span>Всего: <b id="stat-total"><%= stats.total || 0 %></b></span>
+      <span>ldb: <b id="stat-ldb"><%= stats.ldb || 0 %></b></span>
+      <span>edb: <b id="stat-edb"><%= stats.edb || 0 %></b></span>
+    </div>
+
+    <div class="rows" id="rows">
+      <div class="empty">Загрузка…</div>
+    </div>
+  </section>
+
+</div>
+
+<script src="/panel/panel.js" defer></script>
+</body>
+</html>

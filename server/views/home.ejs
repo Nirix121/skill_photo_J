@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify a certificate — PALMIRA Jewels</title>
+<meta name="description" content="Verify a PALMIRA Jewels certificate of authenticity using its unique verification code or link.">
+<link rel="icon" href="/assets/favicon.svg">
+<link rel="stylesheet" href="/verify/home.css">
+</head>
+<body>
+<main class="page">
+  <div class="card">
+    <header>
+      <img class="brand" src="/assets/logo_jewels_dark.png" width="280" alt="PALMIRA Jewels">
+      <div class="rule" aria-hidden="true"></div>
+      <p class="eyebrow">Certificate of authenticity</p>
+      <h1>Verify your certificate</h1>
+      <p class="intro">Enter the complete verification code or paste the link shown on your certificate.</p>
+    </header>
+    <form action="/check" method="post">
+      <label for="code">Verification code or link</label>
+      <input id="code" name="code" type="text" required maxlength="512" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Enter code or paste link" aria-describedby="hint<%= error ? ' form-error' : '' %>">
+      <p class="hint" id="hint">The certificate number alone is not a verification code.</p>
+      <% if (error) { %><p class="form-error" id="form-error" role="alert"><%= error %></p><% } %>
+      <button type="submit">Verify certificate</button>
+    </form>
+  </div>
+  <p class="footer">PALMIRA Jewels</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,78 @@
+/* Лист сертификата (report style), A4 альбом 1123x794 — общий стиль для страницы и PDF. */
+
+@font-face { font-family: 'Nunito Sans'; font-weight: 400; src: url('/fonts/nunito-sans-latin-400.woff2') format('woff2'); }
+@font-face { font-family: 'Nunito Sans'; font-weight: 600; src: url('/fonts/nunito-sans-latin-600.woff2') format('woff2'); }
+@font-face { font-family: 'Nunito Sans'; font-weight: 700; src: url('/fonts/nunito-sans-latin-700.woff2') format('woff2'); }
+
+.sheet {
+  position: relative;
+  width: 1123px;
+  height: 794px;
+  overflow: hidden;
+  background: #fff;
+  color: #23231f;
+  font-family: 'Avenir Next', 'Avenir Next LT Pro', Avenir, 'Nunito Sans', sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.sheet .logo { position: absolute; left: 44px; top: 40px; width: 200px; height: auto; }
+
+.sheet .head { position: absolute; left: 397px; top: 42px; width: 330px; text-align: center; }
+.sheet .head-title { font-size: 11px; letter-spacing: 2px; color: #a08e6a; font-weight: 600; }
+.sheet .head-number { font-size: 22px; margin-top: 4px; }
+
+.sheet .bar {
+  background: #a08e6a; color: #fff;
+  font-size: 10px; font-weight: 600; letter-spacing: 1.4px; padding: 5px 10px; text-align: center;
+}
+.sheet .panel { background: #fbfaf6; border: 1px solid #e7e2d6; }
+
+.sheet .rows { padding: 8px 0; }
+.sheet .row { display: flex; align-items: baseline; font-size: 12.5px; padding: 4px 10px; }
+.sheet .row .l { white-space: nowrap; }
+.sheet .row .d { flex-grow: 1; border-bottom: 1px dotted #9c9683; margin: 0 6px 3px; }
+.sheet .row .v { font-weight: 600; white-space: nowrap; }
+
+/* Левая колонка той же высоты, что и правая (шкалы): низ блоков на одной линии.
+   Свободная высота делится между строками поровну — пустых мест в панелях нет.
+   Вес каждой панели (flex-grow) в шаблоне равен числу её строк. */
+.sheet .col-left {
+  position: absolute; left: 44px; top: 130px; width: 332px; height: 482px;
+  display: flex; flex-direction: column;
+}
+.sheet .col-left > .panel { display: flex; flex-direction: column; flex-basis: 0; }
+.sheet .col-left .rows .row { flex: 1 1 0; align-items: center; }
+.sheet .col-left .gems { flex: 1 1 0; grid-template-rows: auto; grid-auto-rows: 1fr; }
+.sheet .gems .c { display: flex; align-items: center; }
+.sheet .gems .c.a { justify-content: flex-end; }
+.sheet .col-left .bar:not(:first-child) { margin-top: 16px; }
+
+.sheet .gems { display: grid; grid-template-columns: 1.2fr .7fr 1fr .9fr .9fr; column-gap: 8px; padding: 10px 12px 14px; }
+.sheet .gems .h { padding-bottom: 6px; border-bottom: 1px solid #c9c0a8; font-size: 10.5px; letter-spacing: .5px; color: #6f6a5c; }
+.sheet .gems .c { padding: 9px 0; border-bottom: 1px dotted #cfc8b4; font-size: 12.5px; }
+.sheet .gems .cut { font-weight: 600; }
+.sheet .gems .a { text-align: right; }
+
+/* Средняя колонка — ровно посередине между левой (до 376px) и правой (от 749px). */
+.sheet .col-mid { position: absolute; left: 397px; top: 170px; width: 330px; }
+.sheet .photo { display: flex; flex-direction: column; align-items: center; height: 350px; padding: 14px; box-sizing: border-box; }
+.sheet .photo img { width: 300px; height: 300px; object-fit: cover; display: block; }
+
+/* Шкалы цвета и чистоты — справочные, одинаковы на каждом сертификате. */
+/* Поля листа симметричны: левая колонка отстоит от края на 44px, правая — тоже. */
+.sheet .col-right { position: absolute; right: 44px; top: 130px; width: 330px; }
+.sheet .scales { display: flex; gap: 16px; height: 482px; padding: 14px; box-sizing: border-box; }
+.sheet .scale { flex: 1 1 0; display: flex; flex-direction: column; border-bottom: 1px solid #ddd7c8; }
+.sheet .grp { display: flex; min-height: 0; border-top: 1.5px solid #a79e88; }
+.sheet .grp:first-child { border-top: 1px solid #ddd7c8; }
+.sheet .grp-name { width: 24px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.sheet .grp-name span { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 8.5px; line-height: 1.2; text-align: center; }
+.sheet .grades { flex-grow: 1; display: flex; flex-direction: column; border-left: 1px solid #ddd7c8; border-right: 1px solid #ddd7c8; }
+.sheet .grade { flex: 1 1 0; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 12px; }
+.sheet .grade + .grade { border-top: 1px solid #ddd7c8; }
+.sheet .grade small { font-size: 11px; line-height: 1.25; }
+
+.sheet .qr { position: absolute; right: 44px; bottom: 13px; display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 0; }
+.sheet .qr svg { width: 90px; height: 90px; display: block; }
+.sheet .qr figcaption { font-size: 11px; letter-spacing: .3px; }

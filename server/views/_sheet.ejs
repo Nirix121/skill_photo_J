@@ -1,0 +1,91 @@
+<%#
+  Лист сертификата (report style), A4 альбом 1123x794. Один фрагмент идёт и на страницу
+  проверки, и в Puppeteer при печати PDF. Ожидает: cert, photoUrl, qrSvg, qrCaption.
+%>
+<%
+  const colorScale = [
+    { name: 'Colourless', flex: 3, grades: ['D', 'E', 'F'] },
+    { name: 'Near colourless', flex: 4, grades: ['G', 'H', 'I', 'J'] },
+    { name: 'Faint', flex: 3, grades: ['K', 'L', 'M'] },
+    { name: 'Very light', flex: 5, grades: ['N', 'O', 'P', 'Q', 'R'] },
+    { name: 'Light', flex: 8, grades: ['S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'] },
+  ];
+  const clarityScale = [
+    { name: '', grades: ['<small>Flawless</small>', '<small>Internally<br>flawless</small>'] },
+    { name: 'Very very<br>slightly included', grades: ['VVS<sub>1</sub>', 'VVS<sub>2</sub>'] },
+    { name: 'Very slightly<br>included', grades: ['VS<sub>1</sub>', 'VS<sub>2</sub>'] },
+    { name: 'Slightly<br>included', grades: ['SI<sub>1</sub>', 'SI<sub>2</sub>'] },
+    { name: 'Included', flex: 3, grades: ['I<sub>1</sub>', 'I<sub>2</sub>', 'I<sub>3</sub>'] },
+  ];
+%>
+<div class="sheet">
+
+  <img class="logo" src="/assets/logo_jewels_dark.png" alt="PALMIRA Jewels">
+  <div class="head">
+    <div class="head-title">CERTIFICATE OF AUTHENTICITY</div>
+    <div class="head-number"><%= cert.cert_number %></div>
+  </div>
+
+  <div class="col-left">
+    <div class="bar">INFORMATION</div>
+    <div class="panel rows" style="flex-grow: 4">
+      <div class="row"><span class="l">Date of issue</span><span class="d"></span><span class="v"><%= cert.issue_date %></span></div>
+      <div class="row"><span class="l">Item Number</span><span class="d"></span><span class="v"><%= cert.item_number %></span></div>
+      <div class="row"><span class="l">Description</span><span class="d"></span><span class="v"><%= cert.description %></span></div>
+      <div class="row"><span class="l">Size</span><span class="d"></span><span class="v"><%= cert.size %></span></div>
+    </div>
+
+    <div class="bar">MATERIAL</div>
+    <div class="panel rows" style="flex-grow: 3">
+      <div class="row"><span class="l">Metal</span><span class="d"></span><span class="v"><%= cert.metal %></span></div>
+      <div class="row"><span class="l">Fineness</span><span class="d"></span><span class="v"><%= cert.fineness %></span></div>
+      <div class="row"><span class="l">Weight</span><span class="d"></span><span class="v"><%= cert.weight %></span></div>
+    </div>
+
+    <% if (cert.gemstones && cert.gemstones.length) { %>
+      <div class="bar">GEMSTONES</div>
+      <div class="panel" style="flex-grow: <%= cert.gemstones.length + 1 %>">
+        <div class="gems">
+          <div class="h">Cut</div><div class="h a">Qty</div><div class="h a">Quality</div><div class="h a">Color</div><div class="h a">Carat</div>
+          <% for (const gem of cert.gemstones) { %>
+            <div class="c cut"><%= gem.cut || '—' %></div>
+            <div class="c a"><%= gem.qty || '—' %></div>
+            <div class="c a"><%= gem.quality || '—' %></div>
+            <div class="c a"><%= gem.color || '—' %></div>
+            <div class="c a"><%= gem.carat || '—' %></div>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="col-mid">
+    <div class="bar">ITEM PHOTOGRAPH</div>
+    <div class="panel photo">
+      <img src="<%= photoUrl %>" alt="Certified item">
+    </div>
+  </div>
+
+  <div class="col-right">
+    <div class="panel scales">
+      <% for (const scale of [colorScale, clarityScale]) { %>
+        <div class="scale">
+          <% for (const grp of scale) { %>
+            <div class="grp" style="flex: <%= grp.flex || grp.grades.length %> 1 0">
+              <div class="grp-name"><span><%- grp.name %></span></div>
+              <div class="grades">
+                <% for (const g of grp.grades) { %><div class="grade"><%- g %></div><% } %>
+              </div>
+            </div>
+          <% } %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <figure class="qr">
+    <%- qrSvg %>
+    <figcaption><%= qrCaption %></figcaption>
+  </figure>
+
+</div>

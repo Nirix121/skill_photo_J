@@ -1,0 +1,10 @@
+.env
+node_modules/
+data/
+storage/
+backups/
+*.log
+*.zip
+*.tar.gz
+._*
+.DS_Store

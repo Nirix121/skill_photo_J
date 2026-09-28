@@ -1,0 +1,27 @@
+[Unit]
+Description=PALMIRA certificate verification site
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=server
+Group=server
+WorkingDirectory=/home/server/certificate
+EnvironmentFile=/home/server/certificate/.env
+ExecStart=/usr/bin/node /home/server/certificate/server/index.js
+Restart=always
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=20
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+InaccessiblePaths=/home/server/.ssh /home/server/jewelcore1 /home/server/certificateBACK /home/server/Netram /home/server/2
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=palmira-certificates
+
+[Install]
+WantedBy=multi-user.target
